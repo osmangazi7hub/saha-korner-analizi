@@ -1,0 +1,9 @@
+# Büyük ham dosyalar (script'ler yeniden indirir)
+data/raw/handbooks/
+# Python
+__pycache__/
+*.pyc
+.ipynb_checkpoints/
+.venv/
+# Understat maç dosyaları (~4.500 küçük dosya; script yeniden indirir)
+data/raw/understat/matches/
