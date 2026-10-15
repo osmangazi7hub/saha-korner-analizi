@@ -176,3 +176,21 @@ def stadyum_bul(kulup, sezon):
 def sezon_listesi(ilk=2009, son=2025):
     """[('2009-10', '0910'), ...] biçiminde sezon adları ve Football-Data kodları."""
     return [(f"{y}-{str(y + 1)[2:]}", f"{str(y)[2:]}{str(y + 1)[2:]}") for y in range(ilk, son + 1)]
+
+# Understat adı -> resmi ad (listede olmayanlar zaten resmi adla aynı)
+US_RESMI = {
+    "Bournemouth": "AFC Bournemouth",
+    "Brighton": "Brighton & Hove Albion",
+    "Cardiff": "Cardiff City",
+    "Huddersfield": "Huddersfield Town",
+    "Hull": "Hull City",
+    "Ipswich": "Ipswich Town",
+    "Leeds": "Leeds United",
+    "Leicester": "Leicester City",
+    "Luton": "Luton Town",
+    "Norwich": "Norwich City",
+    "Stoke": "Stoke City",
+    "Swansea": "Swansea City",
+    "Tottenham": "Tottenham Hotspur",
+    "West Ham": "West Ham United",
+}
