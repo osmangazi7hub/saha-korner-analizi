@@ -3,7 +3,7 @@
 Futbol sahasının **genişliği** kornerlerin **sayısını** ve **verimini** etkiliyor mu?
 Bu proje Premier Lig verisiyle bu soruya cevap arıyor. Takım kalitesinin ve oyun tarzının etkisini ayırıp sahanın kendi etkisini görmeyi amaçlıyor.
 
-> Durum: **0. adım tamamlandı** (proje iskeleti + resmi saha ölçüleri). Analiz henüz yapılmadı.
+> Durum: **ilk analiz tamamlandı** (adım 00–05). Bulgular aşağıda.
 
 ## Neden bu soru?
 Veri sağlayıcılar sahayı normalleştiriyor. StatsBomb her sahayı 120 × 80, Opta 0–100 olarak gösteriyor.
@@ -74,8 +74,48 @@ python scripts/00_saha_olculeri.py   # el kitaplarını indirir, data/stadiums.c
 python scripts/01_veri_indir.py      # Football-Data (17 sezon) + Understat şutları (12 sezon, ~4.560 maç, ~10-15 dk)
 python scripts/02_temizle.py         # takım adlarını standartlaştırır, kaynakları eşler -> data/processed/
 python scripts/03_birlestir.py       # takım-maç analiz tablosu -> data/processed/takim_mac.csv
+python scripts/04_analiz.py          # genişliğe göre ve takım bazında korner verimi tabloları -> outputs/
+python scripts/05_grafik.py          # grafikler -> outputs/
 ```
-Sonraki adımlar (`01_veri_indir`, `02_temizle`, `03_birlestir`, `04_analiz`, `05_grafik`) eklendikçe bu bölüm güncellenecek.
 
 ## Bulgular
-Henüz analiz yapılmadı.
+
+Soru: **Saha genişliği, kornerden gol ve xG üretimini etkiliyor mu?**
+Dönem: 2014-15 → 2025-26 (xG verisinin olduğu yıllar), yaklaşık 47.000 korner.
+
+### 1. Genişliğe göre korner verimi
+![Genişliğe göre korner verimi](outputs/grafik1_genislige_gore.png)
+
+| Genişlik | Stadyum | Korner | 100 kornerde gol | Korner başına xG |
+|---|---|---|---|---|
+| 65 m | Craven Cottage | 1.180 | 3,1 | 0,039 |
+| 65,8 m | Kenilworth Road | 223 | 5,8 | 0,054 |
+| 65,85 m | Loftus Road | 209 | 4,3 | 0,048 |
+| 66 m | Portman Road, Stoke | 403 | 3,0 | 0,031 |
+| 66,7 m | Bramall Lane | 218 | 2,3 | 0,045 |
+| 66,9 m | Kirklees Stadium | 185 | 1,6 | 0,039 |
+| 67 m | White Hart Lane | 664 | 3,3 | 0,030 |
+| 67,5 m | Stamford Bridge | 2.471 | 3,4 | 0,036 |
+| 68 m | 33 stadyum | 41.568 | 3,5 | 0,038 |
+
+**Yorum:** 68 m sahalarda 100 kornerin yaklaşık 3,5'i gol oluyor. Dar sahalarda bu değer 1,6 ile 5,8 arasında, ama yön tutarlı değil: bazı dar sahalarda daha yüksek, bazılarında daha düşük. Güven aralıkları neredeyse hep 68 m ortalamasını kapsıyor. Yani bu farklar şansla açıklanabilecek büyüklükte. Korner başına xG için de aynı tablo geçerli.
+
+### 2. Takım bazında (deplasman maçları)
+![Takım bazında](outputs/grafik2_takim_bazinda.png)
+
+Dar sahalarda en az 100 korner kullanan 11 takımdan:
+- 3'ü (Arsenal, Bournemouth, Everton) dar sahalarda **daha yüksek** korner başına xG üretmiş,
+- 7'si **daha düşük** üretmiş,
+- 1'inde (West Ham) fark yok.
+
+Her takımın dar-saha verisi 100–170 korner. Bu kadar az kornerde gol ve xG çok oynak olur, yani tek bir takımın farkı güvenilir değil. Tüm takımlar `outputs/tablo2_takim_bazinda.csv` dosyasında.
+
+### Sonuç (sade dille)
+- Bu veride saha genişliği ile korner verimi arasında **net ve tutarlı bir ilişki görünmüyor.** Etki ya yok ya da bu veriyle görülemeyecek kadar küçük. Bu da geçerli bir sonuç.
+- **Neden kesin konuşamıyoruz?** Premier Lig sahaları birbirine çok benziyor: neredeyse hepsi 68 m, en darı 65 m. Dar sahalar da birkaç stadyumda toplanıyor (Fulham, Chelsea ve birkaç kısa süreli kulüp). O stadyumlardaki sonuçlar sahadan değil, ev sahibi takımın savunmasından da gelebilir.
+- **Korelasyon nedensellik değildir.** Buradaki tablolar ilişkiyi gösterir; sahanın kornerleri "değiştirdiğini" kanıtlamaz.
+
+### Sınırlılıklar
+- Saha ölçüleri kulübün lige bildirdiği resmi değerler (el kitabı); sahada bağımsız ölçüm değil.
+- 14 kulüp-sezonun ölçüsü el kitabında yok; bu maçlar analiz dışı.
+- Understat'in "FromCorner" etiketi, kornerden sonra gelen hücumdaki şutları kapsar.
