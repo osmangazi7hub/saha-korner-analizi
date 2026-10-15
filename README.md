@@ -73,6 +73,7 @@ pip install -r requirements.txt
 python scripts/00_saha_olculeri.py   # el kitaplarını indirir, data/stadiums.csv dosyasını yazar
 python scripts/01_veri_indir.py      # Football-Data (17 sezon) + Understat şutları (12 sezon, ~4.560 maç, ~10-15 dk)
 python scripts/02_temizle.py         # takım adlarını standartlaştırır, kaynakları eşler -> data/processed/
+python scripts/03_birlestir.py       # takım-maç analiz tablosu -> data/processed/takim_mac.csv
 ```
 Sonraki adımlar (`01_veri_indir`, `02_temizle`, `03_birlestir`, `04_analiz`, `05_grafik`) eklendikçe bu bölüm güncellenecek.
 
